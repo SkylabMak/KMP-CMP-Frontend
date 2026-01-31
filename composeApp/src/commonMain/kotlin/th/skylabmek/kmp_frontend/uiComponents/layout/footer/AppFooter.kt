@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.TimeZone
@@ -29,13 +30,14 @@ import th.skylabmek.kmp_frontend.shared_resources.footer_construction_icon_desc
 import th.skylabmek.kmp_frontend.shared_resources.footer_tech_stack
 import th.skylabmek.kmp_frontend.shared_resources.footer_temp_info
 import th.skylabmek.kmp_frontend.shared_resources.footer_visit_temp_site
+import th.skylabmek.kmp_frontend.shared_resources.url_temp_portfolio
 import th.skylabmek.kmp_frontend.ui.config.UI
 import kotlin.time.Clock
 
 @Composable
 fun AppFooter(
     modifier: Modifier = Modifier,
-    tempWebsiteUrl: String = "https://temp.skylabmek.th"
+    tempWebsiteUrl: String = stringResource(Res.string.url_temp_portfolio)
 ) {
     val uiConfig = UI
     val currentYear = Clock.System.now()
@@ -156,6 +158,7 @@ fun FooterLinks(
     tempWebsiteUrl: String,
     modifier: Modifier = Modifier
 ) {
+    val uriHandler = LocalUriHandler.current
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -169,7 +172,7 @@ fun FooterLinks(
         )
 
         OutlinedButton(
-            onClick = { /* Open tempWebsiteUrl */ }
+            onClick = { uriHandler.openUri(tempWebsiteUrl) }
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),

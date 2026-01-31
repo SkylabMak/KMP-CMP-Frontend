@@ -1,7 +1,6 @@
 package th.skylabmek.kmp_frontend.uiComponents.layout.header
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,14 +8,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -25,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import th.skylabmek.kmp_frontend.core.common.UiState
@@ -38,8 +34,6 @@ import th.skylabmek.kmp_frontend.shared_resources.header_site_name
 import th.skylabmek.kmp_frontend.ui.components.button.ThemeToggle
 import th.skylabmek.kmp_frontend.ui.components.card.appCard.AppElevatedCard
 import th.skylabmek.kmp_frontend.ui.navigation.NavItemIcon
-import th.skylabmek.kmp_frontend.ui.components.layout.ResponsiveCardTheme
-import th.skylabmek.kmp_frontend.ui.components.layout.ResponsiveCardType
 import th.skylabmek.kmp_frontend.ui.config.ThemeSetting
 import th.skylabmek.kmp_frontend.ui.config.UI
 
@@ -53,6 +47,7 @@ fun AppHeader(
     onMenuClick: () -> Unit = {}
 ) {
     AppElevatedCard(
+        modifier = modifier
     ) {
         if (UI.isDesktop) {
             DesktopHeaderContent(
@@ -166,28 +161,6 @@ private fun MobileHeaderContent(
                     contentDescription = stringResource(Res.string.header_menu_icon_desc)
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun HeaderLogo(
-    size: Dp = 40.dp
-) {
-    Surface(
-        modifier = Modifier.size(size),
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.primary
-    ) {
-        Box(
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "SK",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
         }
     }
 }

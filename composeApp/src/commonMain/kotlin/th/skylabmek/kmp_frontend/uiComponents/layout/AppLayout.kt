@@ -101,7 +101,7 @@ fun AppLayout(
     val headerReserved = headerHeightDp + screenPadding
 
     Box(modifier = modifier.fillMaxSize()) {
-        println("AppLayout is run")
+//        println("AppLayout is run")
 
         // Background scrollable content with footer
         BoxWithConstraints(
@@ -138,7 +138,7 @@ fun AppLayout(
                 .padding(screenPadding)
                 .onSizeChanged { size ->
                     headerHeightPx = size.height
-                    println("Header height px = $headerHeightPx")
+//                    println("Header height px = $headerHeightPx")
                 }
         ) {
             AppHeader(

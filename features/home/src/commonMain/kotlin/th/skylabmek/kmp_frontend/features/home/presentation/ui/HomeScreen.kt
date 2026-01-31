@@ -7,13 +7,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import th.skylabmek.kmp_frontend.core.common.UiState
 import th.skylabmek.kmp_frontend.features.app.presentation.viewmodel.AppViewModel
 import th.skylabmek.kmp_frontend.features.home.presentation.ui.performance.PerformancePreviewDemo
 import th.skylabmek.kmp_frontend.features.home.presentation.ui.performance.PerformancePreviewSection
-import th.skylabmek.kmp_frontend.features.profile.presentation.viewmodel.ProfileBasicData
 import th.skylabmek.kmp_frontend.features.profile.presentation.viewmodel.ProfileViewModel
 import th.skylabmek.kmp_frontend.ui.config.UI
 import th.skylabmek.kmp_frontend.ui.dimens.Dimens
@@ -34,45 +31,41 @@ fun HomeScreen(
     }
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-            val isDesktop = UI.isDesktop
+        val isDesktop = UI.isDesktop
 
-            Column(
-                modifier = Modifier
-                    .padding(Dimens.screenPadding)
-            ) {
-                if (isDesktop) {
-                    DesktopLayout(
-                        PaddingValues(Dimens.screenPadding),
-                        profileUiState,
-                        appViewModel,
-                        profileViewModel,
-                        appId,
-                        profileId
-                    )
-                } else {
-                    MobileLayout(
-                        PaddingValues(Dimens.screenPadding),
-                        profileUiState,
-                        appViewModel,
-                        profileViewModel,
-                        appId,
-                        profileId
-                    )
-                }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(Dimens.screenPadding)
+        ) {
+            if (isDesktop) {
+                DesktopLayout(
+                    appViewModel = appViewModel,
+                    profileViewModel = profileViewModel,
+                    appId = appId,
+                    profileId = profileId
+                )
+            } else {
+                MobileLayout(
+                    appViewModel = appViewModel,
+                    profileViewModel = profileViewModel,
+                    appId = appId,
+                    profileId = profileId
+                )
             }
         }
+    }
 }
 
 @Composable
 fun MobileLayout(
-    padding: PaddingValues,
-    profileUiState: UiState<ProfileBasicData>,
     appViewModel: AppViewModel,
     profileViewModel: ProfileViewModel,
     appId: String,
     profileId: String
 ) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(Dimens.spaceLarge)
     ) {
         PerformancePreviewDemo(
             appViewModel = appViewModel,
@@ -81,44 +74,42 @@ fun MobileLayout(
             profileId = profileId
         )
 
-
         PerformancePreviewSection(
             appViewModel = appViewModel,
             profileViewModel = profileViewModel,
             appId = appId,
             profileId = profileId
         )
-
-
     }
 }
 
 @Composable
 fun DesktopLayout(
-    padding: PaddingValues,
-    profileUiState: UiState<ProfileBasicData>,
     appViewModel: AppViewModel,
     profileViewModel: ProfileViewModel,
     appId: String,
     profileId: String
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.spaceLarge)
     ) {
-        PerformancePreviewDemo(
-            appViewModel = appViewModel,
-            profileViewModel = profileViewModel,
-            appId = appId,
-            profileId = profileId
-        )
+        Box(modifier = Modifier.weight(1f)) {
+            PerformancePreviewDemo(
+                appViewModel = appViewModel,
+                profileViewModel = profileViewModel,
+                appId = appId,
+                profileId = profileId
+            )
+        }
 
-        PerformancePreviewSection(
-            appViewModel = appViewModel,
-            profileViewModel = profileViewModel,
-            appId = appId,
-            profileId = profileId
-        )
+        Box(modifier = Modifier.weight(1f)) {
+            PerformancePreviewSection(
+                appViewModel = appViewModel,
+                profileViewModel = profileViewModel,
+                appId = appId,
+                profileId = profileId
+            )
+        }
     }
 }
