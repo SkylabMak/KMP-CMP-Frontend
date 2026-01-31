@@ -2,6 +2,9 @@
   "version": 2,
   "public": true,
   "cleanUrls": true,
+  "installCommand": "yum install -y java-21-amazon-corretto-devel",
+  "buildCommand": "export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto && chmod +x gradlew && ./gradlew :composeApp:wasmJsBrowserDistribution",
+  "outputDirectory": "composeApp/build/dist/wasmJs/productionExecutable",
   "rewrites": [
     {
       "source": "/(.*)",
@@ -18,17 +21,5 @@
         }
       ]
     }
-  ],
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "composeApp/build/dist/wasmJs/productionExecutable"
-      }
-    }
-  ],
-  "installCommand": "yum install -y java-21-amazon-corretto-devel",
-  "buildCommand": "sh build.sh",
-  "outputDirectory": "composeApp/build/dist/wasmJs/productionExecutable"
+  ]
 }
