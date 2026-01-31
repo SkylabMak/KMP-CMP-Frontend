@@ -11,6 +11,7 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(21)
     // 1. Declare targets first
     androidLibrary {
         namespace = "th.skylabmek.kmp_frontend"
