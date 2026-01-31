@@ -29,5 +29,6 @@
     }
   ],
   "installCommand": "yum install -y java-21-amazon-corretto-devel",
-  "buildCommand": "export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto && ./gradlew :composeApp:wasmJsBrowserDistribution"
+  "buildCommand": "sh build.sh",
+  "outputDirectory": "composeApp/build/dist/wasmJs/productionExecutable"
 }
