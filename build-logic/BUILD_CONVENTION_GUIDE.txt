@@ -1,0 +1,119 @@
+GRADLE CONVENTION PLUGINS & BUILD LOGIC GUIDE
+==============================================
+
+0. HOW TO CREATE BUILD-LOGIC FROM SCRATCH
+-----------------------------------------
+1. Create a `build-logic` folder in your root project.
+2. Inside `build-logic`, create a `settings.gradle.kts` file:
+   ```kotlin
+   rootProject.name = "build-logic"
+   include(":convention")
+   ```
+3. Create a `convention` module: `build-logic/convention/build.gradle.kts`:
+   ```kotlin
+   plugins {
+       `kotlin-dsl`
+   }
+   dependencies {
+       // Add gradle plugins as implementation dependencies here
+       implementation(libs.kotlin.gradlePlugin)
+   }
+   ```
+4. Register your plugin in that same `build.gradle.kts`:
+   ```kotlin
+   gradlePlugin {
+       plugins {
+           register("myPlugin") {
+               id = "my.plugin.id"
+               implementationClass = "MyConventionPlugin"
+           }
+       }
+   }
+   ```
+5. Create the implementation in `build-logic/convention/src/main/kotlin/MyConventionPlugin.kt`.
+   Example `MyConventionPlugin.kt`:
+   ```kotlin
+   import org.gradle.api.Plugin
+   import org.gradle.api.Project
+
+   class MyConventionPlugin : Plugin<Project> {
+       override fun apply(target: Project) {
+           with(target) {
+               // Your logic here, e.g., apply plugins or configure extensions
+               pluginManager.apply("org.jetbrains.kotlin.multiplatform")
+           }
+       }
+   }
+   ```
+6. Include it in your ROOT `settings.gradle.kts`:
+   ```kotlin
+   pluginManagement {
+       includeBuild("build-logic")
+   }
+   ```
+
+1. THE "NOTATION" ERROR (libs.plugins vs libs.libraries)
+-------------------------------------------------------
+ERROR: "Cannot convert the provided notation to an object of type Dependency: org.jetbrains.kotlin.multiplatform:..."
+
+CAUSE:
+In Gradle, `libs.plugins.xxx` is a special accessor designed ONLY for the `plugins { ... }` block.
+When you are in a `dependencies { ... }` block (like inside build-logic/convention/build.gradle.kts),
+Gradle expects a library/artifact notation, not a plugin accessor.
+
+AVOIDANCE:
+In your `libs.versions.toml`, define the plugin as a library artifact as well:
+
+[libraries]
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+[plugins]
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+
+HOW TO USE IN BUILD-LOGIC:
+// Bad
+dependencies {
+    compileOnly(libs.plugins.kotlinMultiplatform) // Fails!
+}
+
+// Good
+dependencies {
+    implementation(libs.kotlin.gradlePlugin) // Works!
+}
+
+
+2. THE "UNRESOLVED REFERENCE" ERROR (Missing Classpath)
+-------------------------------------------------------
+ERROR: "Unresolved reference: FieldSpec" or "Cannot access class 'BuildKonfigExtension'"
+
+CAUSE:
+When you write a Convention Plugin in Kotlin (e.g., BuildKonfigConventionPlugin.kt), your Kotlin
+code needs to "see" the classes of the plugin you are configuring. Simply applying the plugin
+by ID at runtime isn't enough for the compiler to know about its types.
+
+AVOIDANCE:
+Add the plugin's actual artifact (and sometimes its compiler/internal modules) to the
+`dependencies` block of your `build-logic` project using `implementation`.
+
+// build-logic/convention/build.gradle.kts
+dependencies {
+    implementation(libs.buildkonfig.gradlePlugin)
+    implementation(libs.buildkonfig.compiler) // If you need internal enums/types
+}
+
+
+3. IMPLEMENTATION VS COMPILEONLY
+--------------------------------
+- Use `implementation`: When your convention plugin code EXPLICITLY imports and uses classes
+  from that dependency (e.g., `import com.codingfeline...`).
+- Use `compileOnly`: Rarely used in build-logic unless you are sure the consumer of your
+  plugin will provide the dependency and you don't need it for your own compilation.
+  Stick to `implementation` for safety in build-logic.
+
+
+4. SYNCING STRATEGY
+-------------------
+If you add a new library to `libs.versions.toml` to be used in `build-logic`:
+1. Perform a Gradle Sync.
+2. If the IDE still shows red code in your .kt convention files, try 'Reload All Gradle Projects'.
+3. Ensure the `build-logic` project itself is correctly included in `settings.gradle.kts` via `pluginManagement { includeBuild("build-logic") }`.

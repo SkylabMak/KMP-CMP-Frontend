@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">KMP Frontend</string>
+    <string name="profile_title">User Profile</string>
+    <string name="announcements_header">Announcements</string>
+
+    <!-- Error Messages -->
+    <string name="error_timeout">Request timed out. Please try again.</string>
+    <string name="error_no_internet">No internet connection. Please check your network.</string>
+    <string name="error_server_generic">Server error occurred. Please try again later.</string>
+    <string name="error_unknown">An unexpected error occurred.</string>
+    <string name="error_loading_failed">Failed to load data.</string>
+
+    <!-- Header -->
+    <string name="header_site_name">SkylabMek</string>
+    <string name="header_menu_icon_desc">Menu</string>
+    <string name="header_theme_toggle_desc">Toggle theme</string>
+    <string name="header_logo_desc">SkylabMek logo</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_about">About</string>
+    <string name="nav_projects">Projects</string>
+    <string name="nav_contact">Contact</string>
+    <string name="nav_coming_soon">Coming Soon</string>
+
+    <!-- Footer Copyright -->
+    <string name="footer_copyright">© %d SkylabMek. All rights reserved.</string>
+
+    <!-- Footer Construction Status -->
+    <string name="footer_construction_status">Website under construction</string>
+    <string name="footer_construction_icon_desc">Under Construction</string>
+
+    <!-- Footer Links -->
+    <string name="footer_temp_info">Want to know more about my work or need temporary access?</string>
+    <string name="footer_visit_temp_site">Visit Temporary Website</string>
+
+    <!-- Footer Tech Stack -->
+    <string name="footer_tech_stack">Cross-platform UI with Kotlin Multiplatform + Compose Multiplatform • Rust-powered Backend • MySQL Database</string>
+
+    <!-- App Info -->
+    <string name="domain_name">SkylabMek</string>
+    <string name="app_alias">SkylabMek Personal Website</string>
+
+    <!-- Feature Status -->
+    <string name="feature_status_operational_name">Operational</string>
+    <string name="feature_status_operational_desc">Feature is usable</string>
+
+    <string name="feature_status_under_construction_name">Under Construction</string>
+    <string name="feature_status_under_construction_desc">Feature is being developed</string>
+
+    <string name="feature_status_maintenance_name">Maintenance</string>
+    <string name="feature_status_maintenance_desc">Temporarily unavailable</string>
+    <string name="feature_status_maintenance_instruction">Please check back later while we perform maintenance.</string>
+
+    <string name="feature_status_down_name">Down</string>
+    <string name="feature_status_down_desc">Feature unavailable</string>
+    <string name="feature_status_down_instruction">We are working on fixing this. Please try again later.</string>
+
+    <string name="feature_status_closed_name">Closed</string>
+    <string name="feature_status_closed_desc">Feature is intentionally disabled and not available to users</string>
+
+    <!-- Feature Names -->
+    <string name="feature_name_life_status">Life Status</string>
+    <string name="feature_name_projects">Projects</string>
+    <string name="feature_name_bug_report">Bug Report</string>
+    <string name="feature_name_direct_contact">Direct Contact</string>
+    <string name="feature_name_show_performance">Show Performance</string>
+    <string name="feature_name_show_demo_prototype">Demo/Prototype</string>
+    <string name="feature_name_show_profile_info">Show Profile Info</string>
+    <string name="feature_name_unknown">Unknown Feature</string>
+
+    <!-- Links -->
+    <string name="url_old_website">https://skylabmak.vercel.app/</string>
+    <string name="url_temp_portfolio">https://stormy-hare-cb6.notion.site/Praisan-Sormakew-184439edb1b880589cf6c90c6f269542</string>
+
+    <!-- Performance Preview construction -->
+    <string name="performance_preview_construction_title">Performance section is under development.</string>
+    <string name="performance_preview_construction_msg">While I\'m building this feature, you can view my performance highlights and full portfolio on my temporary Notion site.</string>
+    <string name="performance_preview_visit_notion">View on Notion</string>
+    <string name="performance_preview_visit_old_site">Visit Old Website</string>
+</resources>

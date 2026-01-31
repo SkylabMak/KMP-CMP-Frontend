@@ -1,0 +1,53 @@
+package th.skylabmek.kmp_frontend.domain.data.repository.profile
+
+import io.ktor.http.HttpMethod
+import th.skylabmek.kmp_frontend.core.network.network_client.NetworkClient
+import th.skylabmek.kmp_frontend.core.network.network_client.executeWrapped
+import th.skylabmek.kmp_frontend.core.network.request.RequestSpec
+import th.skylabmek.kmp_frontend.core.network.result.NetworkResult
+import th.skylabmek.kmp_frontend.domain.model.profile.AnnounceResponse
+import th.skylabmek.kmp_frontend.domain.model.profile.LifeStatus
+import th.skylabmek.kmp_frontend.domain.model.profile.Performance
+import th.skylabmek.kmp_frontend.domain.model.profile.PerformanceGroup
+import th.skylabmek.kmp_frontend.domain.repository.profile.ProfileRepository
+
+class ProfileRepositoryImpl(
+    private val networkClient: NetworkClient
+) : ProfileRepository {
+
+    override suspend fun getAnnounces(profileId: String): NetworkResult<AnnounceResponse> {
+        return networkClient.executeWrapped(
+            reqSpec = RequestSpec(
+                method = HttpMethod.Get,
+                path = "/profiles/$profileId/announces"
+            ),
+        )
+    }
+
+    override suspend fun getLifeStatus(profileId: String): NetworkResult<LifeStatus> {
+        return networkClient.executeWrapped(
+            reqSpec = RequestSpec(
+                method = HttpMethod.Get,
+                path = "/profiles/$profileId/life-status/current"
+            ),
+        )
+    }
+
+    override suspend fun getPerformances(profileId: String): NetworkResult<List<Performance>> {
+        return networkClient.executeWrapped(
+            reqSpec = RequestSpec(
+                method = HttpMethod.Get,
+                path = "/profiles/$profileId/performances"
+            )
+        )
+    }
+
+    override suspend fun getPerformanceGroups(profileId: String): NetworkResult<List<PerformanceGroup>> {
+        return networkClient.executeWrapped(
+            reqSpec = RequestSpec(
+                method = HttpMethod.Get,
+                path = "/profiles/$profileId/performances/groups"
+            )
+        )
+    }
+}

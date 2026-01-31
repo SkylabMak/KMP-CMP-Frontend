@@ -1,0 +1,46 @@
+*.iml
+.kotlin
+.gradle
+**/build/
+xcuserdata
+!src/**/build/
+local.properties
+.idea
+.DS_Store
+captures
+.externalNativeBuild
+.cxx
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+node_modules/
+
+# Kotlin Multiplatform
+.konan
+kotlin-js-store
+
+# Compose Multiplatform
+composeApp/build/
+**/build/
+
+# Android
+*.apk
+*.aar
+*.ap_
+*.dex
+/captures
+/google-services.json
+
+# Web
+.next/
+dist/
+out/
+build/
+.vercel
+
+# OS specific
+Thumbs.db
+desktop.ini
