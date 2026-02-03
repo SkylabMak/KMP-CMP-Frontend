@@ -1,6 +1,6 @@
 object BuildConfig {
-    const val APP_NAME = "..."
-    const val PACKAGE_NAME = "..."
+    const val APP_NAME = "SkylabMek"
+    const val PACKAGE_NAME = "th.skylabmek.kmp_frontend"
     
     const val VERSION_NAME = "1.0.0"
     const val VERSION_CODE = 1
