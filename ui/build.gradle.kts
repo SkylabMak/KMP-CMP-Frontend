@@ -84,6 +84,7 @@ kotlin {
                 implementation(libs.kotlin.stdlib)
                 implementation(project(":shared-resources"))
                 implementation(project(":domain"))
+                implementation(project(":core:common"))
 
 
                 // navigation

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -19,13 +18,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RichTooltip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.TooltipScope
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import kotlinx.coroutines.launch
 import th.skylabmek.kmp_frontend.core.common.UiState
 import th.skylabmek.kmp_frontend.core.common.errorMessage
 import th.skylabmek.kmp_frontend.domain.model.profile.LifeStatus
@@ -45,22 +52,31 @@ val clickableAreaSize = 42.dp
 
 /**
  * Version 1: Shows a small Tooltip Card near the indicator.
+ * Now uses Material 3 TooltipBox and RichTooltip.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LifeStatusIndicatorWithTooltip(
     uiState: UiState<LifeStatus>,
     modifier: Modifier = Modifier
 ) {
-    BaseLifeStatusIndicator(
-        uiState = uiState,
+    val tooltipState = rememberTooltipState(isPersistent = true)
+    val scope = rememberCoroutineScope()
+
+    TooltipBox(
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
+        tooltip = {
+            LifeStatusTooltipContent(uiState)
+        },
+        state = tooltipState,
         modifier = modifier
-    ) { onDismiss ->
-        Popup(
-            onDismissRequest = onDismiss,
-            properties = PopupProperties(focusable = true)
-        ) {
-            LifeStatusTooltipContent(uiState, onDismiss)
-        }
+    ) {
+        LifeStatusDot(
+            uiState = uiState,
+            onClick = {
+                scope.launch { tooltipState.show() }
+            }
+        )
     }
 }
 
@@ -170,65 +186,70 @@ private fun LifeStatusDot(
 
 // --- Content Layouts ---
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LifeStatusTooltipContent(
-    uiState: UiState<LifeStatus>,
-    onDismiss: () -> Unit
+private fun TooltipScope.LifeStatusTooltipContent(
+    uiState: UiState<LifeStatus>
 ) {
-    Card(
-        modifier = Modifier
-            .offset(y = Dimens.tooltipOffset + (clickableAreaSize / 2))
-            .widthIn(max = Dimens.tooltipMaxWidth)
-            .clickable { onDismiss() },
-        shape = RoundedCornerShape(Dimens.cardCornerRadiusSmall),
-        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.cardElevationSmall)
-    ) {
-        Column(modifier = Modifier.padding(Dimens.paddingMedium)) {
-            when (uiState) {
-                is UiState.Loading -> {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(Dimens.spaceSmall),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(16.dp),
-                            strokeWidth = 2.dp
-                        )
-                        Text(text = "Loading...", style = MaterialTheme.typography.bodySmall)
-                    }
+    when (uiState) {
+        is UiState.Loading -> {
+            RichTooltip(
+                title = {
+                    Text(
+                        text = "Loading",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
-
-                is UiState.Error -> {
-                    Column {
-                        Text(
-                            text = "Error",
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                        Spacer(modifier = Modifier.height(Dimens.spaceSmall))
-                        Text(
-                            text = uiState.uiError.errorMessage()(),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.spaceSmall),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(16.dp),
+                        strokeWidth = 2.dp
+                    )
+                    Text(text = "Loading...", style = MaterialTheme.typography.bodySmall)
                 }
+            }
+        }
 
-                is UiState.Success -> {
-                    val lifeStatus = uiState.data
+        is UiState.Error -> {
+            RichTooltip(
+                title = {
+                    Text(
+                        text = "Error",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            ) {
+                Text(
+                    text = uiState.uiError.errorMessage()(),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+        }
+
+        is UiState.Success -> {
+            val lifeStatus = uiState.data
+            RichTooltip(
+                title = {
                     Text(
                         text = lifeStatus.name,
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
-                    lifeStatus.description?.let {
-                        Spacer(modifier = Modifier.height(Dimens.spaceSmall))
-                        Text(
-                            text = it,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                }
+            ) {
+                lifeStatus.description?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }

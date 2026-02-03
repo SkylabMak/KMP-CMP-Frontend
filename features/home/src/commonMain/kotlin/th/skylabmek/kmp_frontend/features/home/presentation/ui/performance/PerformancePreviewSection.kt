@@ -23,6 +23,8 @@ import th.skylabmek.kmp_frontend.shared_resources.Res
 import th.skylabmek.kmp_frontend.shared_resources.*
 import th.skylabmek.kmp_frontend.ui.components.card.appCard.AppElevatedCard
 import th.skylabmek.kmp_frontend.ui.components.feature.FeatureStatusStripped
+import th.skylabmek.kmp_frontend.ui.components.layout.DefaultErrorContent
+import th.skylabmek.kmp_frontend.ui.components.layout.DefaultLoadingContent
 import th.skylabmek.kmp_frontend.ui.dimens.Dimens
 
 @Composable
@@ -50,9 +52,7 @@ fun PerformancePreviewSection(
             Column(modifier = Modifier.fillMaxWidth().padding(Dimens.paddingMedium)) {
                 when (val state = featureStatusState) {
                     is UiState.Loading -> {
-                        Box(Modifier.fillMaxWidth().height(Dimens.containerMaxWidth / 10), contentAlignment = Alignment.Center) {
-                            CircularProgressIndicator()
-                        }
+                        DefaultLoadingContent(modifier = Modifier.height(Dimens.containerMaxWidth / 10))
                     }
 
                     is UiState.Success -> {
@@ -74,7 +74,10 @@ fun PerformancePreviewSection(
                     }
 
                     is UiState.Error -> {
-                        // Handle error state if needed
+                        DefaultErrorContent(
+                            error = state.uiError,
+                            onRetry = { /* Refresh feature status */ }
+                        )
                     }
                 }
             }
@@ -105,17 +108,13 @@ private fun PerformancePreviewContent(
             }
         }
         when (profileUiState) {
-            is UiState.Loading -> Box(
-                Modifier.fillMaxWidth().height(Dimens.containerMaxWidth / 12),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
+            is UiState.Loading -> DefaultLoadingContent(modifier = Modifier.height(Dimens.containerMaxWidth / 12))
 
             is UiState.Error -> {
-                Button(onClick = { profileViewModel.loadProfileBasicData(profileId) }) {
-                    Text("Retry")
-                }
+                DefaultErrorContent(
+                    error = profileUiState.uiError,
+                    onRetry = { profileViewModel.loadProfileBasicData(profileId) }
+                )
             }
 
             is UiState.Success -> {

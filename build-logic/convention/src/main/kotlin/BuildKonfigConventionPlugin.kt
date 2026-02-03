@@ -22,9 +22,19 @@ class BuildKonfigConventionPlugin : Plugin<Project> {
                 defaultConfigs("release") {
                     buildConfigField(Type.BOOLEAN, "IS_PRODUCTION", "true")
                 }
-                
-                // For Web/WasmJS, we want to enable production mode for distribution
+
+                // Define target-specific configurations
                 targetConfigs {
+                    create("wasmJs") {
+                        // Inherits IS_PRODUCTION = false from defaultConfigs
+                    }
+                    create("js") {
+                        // Inherits IS_PRODUCTION = false from defaultConfigs
+                    }
+                }
+
+                // Explicitly configure release flavor for specific targets if needed
+                targetConfigs("release") {
                     create("wasmJs") {
                         buildConfigField(Type.BOOLEAN, "IS_PRODUCTION", "true")
                     }

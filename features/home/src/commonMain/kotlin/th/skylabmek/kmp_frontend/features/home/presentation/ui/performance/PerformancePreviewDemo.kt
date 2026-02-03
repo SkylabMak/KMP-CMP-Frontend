@@ -23,6 +23,8 @@ import th.skylabmek.kmp_frontend.shared_resources.Res
 import th.skylabmek.kmp_frontend.shared_resources.*
 import th.skylabmek.kmp_frontend.ui.components.card.appCard.AppElevatedCard
 import th.skylabmek.kmp_frontend.ui.components.feature.FeatureStatusStripped
+import th.skylabmek.kmp_frontend.ui.components.layout.DefaultErrorContent
+import th.skylabmek.kmp_frontend.ui.components.layout.DefaultLoadingContent
 import th.skylabmek.kmp_frontend.ui.dimens.Dimens
 
 @Composable
@@ -47,7 +49,7 @@ fun PerformancePreviewDemo(
             Column(modifier = Modifier.fillMaxWidth().padding(Dimens.paddingMedium)) {
                 when (val state = featureStatusState) {
                     is UiState.Loading -> {
-                        // Loading feature status
+                        DefaultLoadingContent(modifier = Modifier.height(Dimens.containerMaxWidth / 15))
                     }
                     is UiState.Success -> {
                         val statusCode = state.data
@@ -60,7 +62,10 @@ fun PerformancePreviewDemo(
                         }
                     }
                     is UiState.Error -> {
-                        // Handle error
+                        DefaultErrorContent(
+                            error = state.uiError,
+                            onRetry = { /* Handle feature status refresh */ }
+                        )
                     }
                 }
             }
@@ -76,13 +81,13 @@ private fun DemoPreviewContent(
 ) {
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Dimens.spaceSmall)) {
         when (profileUiState) {
-            is UiState.Loading -> Box(Modifier.fillMaxWidth().height(Dimens.containerMaxWidth / 15), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
+            is UiState.Loading -> DefaultLoadingContent(modifier = Modifier.height(Dimens.containerMaxWidth / 15))
+
             is UiState.Error -> {
-                Button(onClick = { profileViewModel.loadProfileBasicData(profileId) }) {
-                    Text("Retry Loading Demos")
-                }
+                DefaultErrorContent(
+                    error = profileUiState.uiError,
+                    onRetry = { profileViewModel.loadProfileBasicData(profileId) }
+                )
             }
             is UiState.Success -> {
                 val demos = profileUiState.data.filter {
