@@ -9,27 +9,21 @@ object AppConfig {
     val PROFILE_ID: String get() = AppBuildKonfig.PROFILE_ID
     val APP_ID: String get() = AppBuildKonfig.APP_ID
     val IS_PRODUCTION: Boolean get() = AppBuildKonfig.IS_PRODUCTION
+    val IS_DEBUG: Boolean get() = AppBuildKonfig.IS_DEBUG
 
     /**
      * The base URL for API calls, automatically resolved based on the current platform 
      * and environment (Dev/Prod).
      */
-    val apiBaseUrl: String
-        get() = if (IS_PRODUCTION) {
-            "https://api.skylabmek.net/"
-        } else {
-            // Android emulator needs a special IP to access localhost of the host machine
-            if (currentPlatform == "Android") "http://10.0.2.2:3000"
-            else "http://localhost:3000"
-        }
+    val apiBaseUrl: String get() = AppBuildKonfig.BASE_URL
 
     /**
      * Whether the app is running in debug mode.
      */
-    val isDebug: Boolean get() = !IS_PRODUCTION
+    val isDebug: Boolean get() = IS_DEBUG
 
     object Features {
         const val ENABLE_ANALYTICS = true
-        const val ENABLE_LOGGING = true
+        val ENABLE_LOGGING: Boolean get() = IS_DEBUG
     }
 }
