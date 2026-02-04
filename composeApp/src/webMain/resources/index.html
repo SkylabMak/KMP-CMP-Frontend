@@ -3,13 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SkylabMek</title>
+
+    <!-- Primary Meta Tags -->
+    <title>SkylabMek | Personal Portfolio</title>
+    <meta name="title" content="SkylabMek | Personal Portfolio & Engineering">
+    <meta name="description" content="Explore SkylabMek - A showcase of engineering projects, software development, and modern multiplatform applications. Built with Kotlin Multiplatform.">
+    <meta name="keywords" content="SkylabMek, Kotlin Multiplatform, KMP, Compose Multiplatform, Software Engineer, Portfolio, Android, Web, iOS">
+    <meta name="author" content="SkylabMek">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://skylabmek.net/">
+    <meta property="og:title" content="SkylabMek | Personal Portfolio & Engineering">
+    <meta property="og:description" content="Explore SkylabMek - A showcase of engineering projects, software development, and modern multiplatform applications.">
+    <meta property="og:image" content="https://skylabmek.net/mek_lowercase_circle.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://skylabmek.net/">
+    <meta property="twitter:title" content="SkylabMek | Personal Portfolio & Engineering">
+    <meta property="twitter:description" content="Explore SkylabMek - A showcase of engineering projects, software development, and modern multiplatform applications.">
+    <meta property="twitter:image" content="https://skylabmek.net/mek_lowercase_circle.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://skylabmek.net/">
+
     <link rel="icon" type="image/png" href="mek_lowercase_circle.png">
     <link type="text/css" rel="stylesheet" href="styles.css">
 </head>
 <body style="text-align: center; align-content: center; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f0f0;">
     <div id="compose-target"></div>
-    <svg id="loading-spinner" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 50 50" role="presentation" style="position: absolute;">
+
+    <!-- Loading Spinner -->
+    <svg id="loading-spinner" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 50 50" aria-label="Loading..." role="status" style="position: absolute;">
         <circle cx="25" cy="25" r="20" stroke="#ccc" stroke-width="4" fill="none"/>
         <circle cx="25" cy="25" r="20" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"
                 stroke-dasharray="90 125">
@@ -17,6 +44,7 @@
                               repeatCount="indefinite"/>
         </circle>
     </svg>
+
     <script type="application/javascript" src="composeApp.js"></script>
 </body>
 </html>
